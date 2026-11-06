@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Book Sanctuary</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../CSS/styles.css">
 </head>
+
 <body>
     <header class="site-header">
         <div class="container">
@@ -40,34 +44,40 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="username">Username *</label>
-                            <input type="text" id="username" name="username" class="form-control" placeholder="Choose a username" required>
+                            <input type="text" id="username" name="username" class="form-control"
+                                placeholder="Choose a username" required>
                         </div>
                         <div class="form-group">
                             <label for="password">Password *</label>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Choose a secure password" required>
+                            <input type="Password" id="password" name="password" class="form-control"
+                                placeholder="Choose a secure password" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstname">First Name *</label>
-                            <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First name" required>
+                            <input type="text" id="firstname" name="firstname" class="form-control"
+                                placeholder="First name" required>
                         </div>
                         <div class="form-group">
                             <label for="surname">Surname *</label>
-                            <input type="text" id="surname" name="surname" class="form-control" placeholder="Surname" required>
+                            <input type="text" id="surname" name="surname" class="form-control" placeholder="Surname"
+                                required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="addressline1">Address Line 1 *</label>
-                        <input type="text" id="addressline1" name="addressline1" class="form-control" placeholder="Street address" required>
+                        <input type="text" id="addressline1" name="addressline1" class="form-control"
+                            placeholder="Street address" required>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="addressline2">Address Line 2</label>
-                            <input type="text" id="addressline2" name="addressline2" class="form-control" placeholder="Apartment, suite, etc.">
+                            <input type="text" id="addressline2" name="addressline2" class="form-control"
+                                placeholder="Apartment, suite, etc.">
                         </div>
                         <div class="form-group">
                             <label for="city">City *</label>
@@ -78,11 +88,13 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="telephone">Telephone</label>
-                            <input type="tel" id="telephone" name="telephone" class="form-control" placeholder="Landline number">
+                            <input type="tel" id="telephone" name="telephone" class="form-control"
+                                placeholder="Landline number">
                         </div>
                         <div class="form-group">
                             <label for="mobile">Mobile (10 digits) *</label>
-                            <input type="tel" id="mobile" name="mobile" class="form-control" placeholder="e.g. 0871234567" pattern="[0-9]{10}" required>
+                            <input type="tel" id="mobile" name="mobile" class="form-control"
+                                placeholder="e.g. 0871234567" pattern="[0-9]{10}" required>
                         </div>
                     </div>
 
@@ -95,9 +107,43 @@
                     </p>
                 </form>
 
-<?php
+                <?php
+                $servername = 'localhost';
+                $username = 'root';
+                $passward = '';
+                $database = 'commonplace_library';
 
-?>
+                // Create connection
+                $conn = new mysqli($servername, $username, $passward, $database);
+
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['firstname']) && isset($_POST['surname']) && isset($_POST['addressline1']) && isset($_POST['addressline2']) && isset($_POST['city']) && isset($_POST['telephone']) && isset($_POST['mobile'])) {
+
+                    $u = $_POST['username'];
+                    $p = $_POST['password'];
+                    $n = $_POST['firstname'];
+                    $s = $_POST['surname'];
+                    $a = $_POST['addressline1'];
+                    $aa = $_POST['addressline2'];
+                    $c = $_POST['city'];
+                    $t = $_POST['telephone'];
+                    $m = $_POST['mobile'];
+
+                    $sql = "INSERT INTO Users (Username, PasswordHash, FirstName, Surname, AddressLine1, AddressLine2, City, Telephone, Mobile) VALUES ('$u', '$p', '$n', '$s', '$a', '$aa', '$c', '$t', '$m')";
+
+                    if ($conn->query($sql) === TRUE) {
+                        echo "<p style='color: green; font-weight: bold; margin-top: 1rem;'>New record created successfully</p>";
+                    } else {
+                        echo "<p style='color: red; font-weight: bold; margin-top: 1rem;'>Error: " . $sql . "<br>" . $conn->error . "</p>";
+                    }
+                    $conn->close();
+                }
+
+                ?>
             </div>
         </div>
     </main>
@@ -109,7 +155,8 @@
     </footer>
 
     <script>
-        
+
     </script>
 </body>
+
 </html>

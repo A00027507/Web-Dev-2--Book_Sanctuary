@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Book Sanctuary</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="CSS/styles.css">
 </head>
+
 <body>
     <header class="site-header">
         <div class="container">
@@ -35,12 +39,15 @@
             <div class="container">
                 <div class="hero-content">
                     <h2 class="hero-title">Find Your Next Great Read</h2>
-                    <p class="hero-subtitle">Search our curated catalogue by title or author to browse and reserve books.</p>
+                    <p class="hero-subtitle">Search our curated catalogue by title or author to browse and reserve
+                        books.</p>
                 </div>
                 <form class="search-panel" action="index.php" method="get">
                     <label class="search-box">
                         <span aria-hidden="true"></span>
-                        <input type="search" name="q" value="<?php echo isset($_GET['q']) ? htmlspecialchars($_GET['q']) : ''; ?>" placeholder="Search by title or author…" aria-label="Search by book title or author">
+                        <input type="search" name="q"
+                            value="<?php echo isset($_GET['q']) ? htmlspecialchars($_GET['q']) : ''; ?>"
+                            placeholder="Search by title or author…" aria-label="Search by book title or author">
                     </label>
                     <button class="button search-button" type="submit">Search books</button>
                 </form>
@@ -48,72 +55,79 @@
         </section>
 
         <section class="container">
-<?php
+            <?php
+            $servername = 'localhost';
+            $username = 'root';
+            $passward = '';
+            $database = 'commonplace_library';
 
-// Connect to the database using mysqli (host, username, password, database name)
-$connection = mysqli_connect('localhost', 'root', '', 'commonplace_library');
+            // Create connection
+            $connection = mysqli_connect($servername, $username, $passward, $database);
 
-// Check connection
-if (!$connection) {
-    echo "<div class='alert alert-error'>Connection failed: " . htmlspecialchars(mysqli_connect_error()) . "</div>";
-} else {
-    // Check if a search query was submitted
-    $search = isset($_GET['q']) ? trim($_GET['q']) : '';
+            // Connect to the database using mysqli (host, username, password, database name)
 
-    if ($search !== '') {
-        $searchEscaped = mysqli_real_escape_string($connection, $search);
-        $query = "SELECT b.ISBN, b.BookTitle, b.Author, b.Edition, b.PublishedYear, c.CategoryDescription 
+            // Check connection
+            if (!$connection) {
+                echo "<div class='alert alert-error'>Connection failed: " . htmlspecialchars(mysqli_connect_error()) . "</div>";
+            } else {
+                // Check if a search query was submitted
+                $search = isset($_GET['q']) ? trim($_GET['q']) : '';
+
+                if ($search !== '') {
+                    $searchEscaped = mysqli_real_escape_string($connection, $search);
+                    $query = "SELECT b.ISBN, b.BookTitle, b.Author, b.Edition, b.PublishedYear, c.CategoryDescription 
                   FROM Books b 
                   LEFT JOIN Categories c ON b.CategoryID = c.CategoryID 
                   WHERE b.BookTitle LIKE '%$searchEscaped%' OR b.Author LIKE '%$searchEscaped%'";
-        echo "<p style='margin: 1.5rem 0 0.5rem; color: var(--text-secondary);'>Search results for: <strong>" . htmlspecialchars($search) . "</strong> (<a href='index.php'>Show all</a>)</p>";
-    } else {
-        $query = "SELECT b.ISBN, b.BookTitle, b.Author, b.Edition, b.PublishedYear, c.CategoryDescription 
+                    echo "<p style='margin: 1.5rem 0 0.5rem; color: var(--text-secondary);'>Search results for: <strong>" . htmlspecialchars($search) . "</strong> (<a href='index.php'>Show all</a>)</p>";
+                } else {
+                    $query = "SELECT b.ISBN, b.BookTitle, b.Author, b.Edition, b.PublishedYear, c.CategoryDescription 
                   FROM Books b 
                   LEFT JOIN Categories c ON b.CategoryID = c.CategoryID";
-    }
+                }
+                
 
-    $result = mysqli_query($connection, $query);
+                $result = mysqli_query($connection, $query);
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        echo "<div class='table-wrapper'>";
-        echo "<table>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th>ISBN</th>";
-        echo "<th>Title</th>";
-        echo "<th>Author</th>";
-        echo "<th>Edition</th>";
-        echo "<th>Year</th>";
-        echo "<th>Category</th>";
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
+                if ($result && mysqli_num_rows($result) > 0) {
+                    echo "<div class='table-wrapper'>";
+                    echo "<table>";
+                    echo "<thead>";
+                    echo "<tr>";
+                    echo "<th>ISBN</th>";
+                    echo "<th>Title</th>";
+                    echo "<th>Author</th>";
+                    echo "<th>Edition</th>";
+                    echo "<th>Year</th>";
+                    echo "<th>Category</th>";
+                    echo "</tr>";
+                    echo "</thead>";
+                    echo "<tbody>";
 
-        // Loop through results
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['ISBN']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['BookTitle']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['Author']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['Edition']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['PublishedYear']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['CategoryDescription'] ?? '') . "</td>";
-            echo "</tr>";
-        }
+                    // Loop through results
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['ISBN']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['BookTitle']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['Author']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['Edition']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['PublishedYear']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['CategoryDescription'] ?? '') . "</td>";
+                        echo "</tr>";
+                    }
 
-        echo "</tbody>";
-        echo "</table>";
-        echo "</div>";
-    } else {
-        echo "<div class='alert' style='background-color: var(--bg-surface-alt); margin: 2rem 0;'>No books found." . ($search !== '' ? " <a href='index.php' style='margin-left: 0.5rem;'>View all books</a>" : "") . "</div>";
-    }
+                    echo "</tbody>";
+                    echo "</table>";
+                    echo "</div>";
+                } else {
+                    echo "<div class='alert' style='background-color: var(--bg-surface-alt); margin: 2rem 0;'>No books found." . ($search !== '' ? " <a href='index.php' style='margin-left: 0.5rem;'>View all books</a>" : "") . "</div>";
+                }
 
-    // Close the database connection
-    mysqli_close($connection);
-}
+                // Close the database connection
+                mysqli_close($connection);
+            }
 
-?>
+            ?>
         </section>
     </main>
 
@@ -124,7 +138,8 @@ if (!$connection) {
     </footer>
 
     <script>
-    
+
     </script>
 </body>
+
 </html>
