@@ -25,9 +25,7 @@
             </button>
             <nav id="primary-navigation" class="site-nav" aria-label="Primary">
                 <ul>
-                    <li><a href="../index.php">Home</a></li>
-                    <li><a href="mybooks.php">MyBooks</a></li>
-                    <li><a href="login.php">Login</a></li>
+                    <li><a href="../index.php">Login</a></li>
                     <li><a href="register.php" aria-current="page">Register</a></li>
                 </ul>
             </nav>
@@ -103,7 +101,7 @@
                     </div>
 
                     <p class="form-footer-text">
-                        Already have an account? <a href="login.php">Sign in here</a>
+                        Already have an account? <a href="../index.php">Sign in here</a>
                     </p>
                 </form>
 
@@ -113,10 +111,10 @@
                 $passward = '';
                 $database = 'commonplace_library';
 
-                // Create connection
+             
                 $conn = new mysqli($servername, $username, $passward, $database);
 
-                // Check connection
+        
                 if ($conn->connect_error) {
                     die("Connection failed: " . $conn->connect_error);
                 }

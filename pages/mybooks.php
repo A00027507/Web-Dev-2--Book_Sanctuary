@@ -12,7 +12,7 @@
 <body>
     <header class="site-header">
         <div class="container">
-            <h1 class="site-title"><a href="../index.php">Book Sanctuary</a></h1>
+            <h1 class="site-title"><a href="home.php">Book Sanctuary</a></h1>
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="nav-toggle-bar"></span>
@@ -21,10 +21,10 @@
             </button>
             <nav id="primary-navigation" class="site-nav" aria-label="Primary">
                 <ul>
-                    <li><a href="../index.php">Home</a></li>
+                    <li><a href="home.php">Home</a></li>
                     <li><a href="mybooks.php" aria-current="page">MyBooks</a></li>
-                    <li><a href="login.php">Login</a></li>
-                    <li><a href="register.php">Register</a></li>
+                    <li><a href="../index.php">Sign out</a></li>
+   
                 </ul>
             </nav>
         </div>
