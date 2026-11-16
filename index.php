@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,6 +75,7 @@
                 $passward = '';
                 $database = 'commonplace_library';
 
+
                 // Create connection
                 $conn = new mysqli($servername, $username, $passward, $database);
 
@@ -97,6 +106,8 @@
                     } else {
                         echo "<p style='color: red; font-weight: bold; margin-top: 1rem;'>Username does not exist.</p>";
                     }
+                    
+                    $_SESSION['username'] = $u;
 
                     $conn->close();
                 }

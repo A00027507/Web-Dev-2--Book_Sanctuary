@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password">Password *</label>
-                            <input type="Password" id="password" name="password" class="form-control"
+                            <input type="Password" required minlength="6" maxlength="6" id="password" name="password" class="form-control"
                                 placeholder="Choose a secure password" required>
                         </div>
                     </div>

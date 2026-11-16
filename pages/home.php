@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../index.php");
+    exit();
+}
+
+$currentUser = $_SESSION['username'];
+if ($currentUser == ''){
+    echo "<script>window.location.href = '../index.php';</script>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,9 +38,10 @@
             </button>
             <nav id="primary-navigation" class="site-nav" aria-label="Primary">
                 <ul>
+                    <li><span style="color: var(--text-secondary); font-size: 0.9rem; padding: 0.55rem 0.5rem;">Logged in as: <strong><?php echo htmlspecialchars($currentUser); ?></strong></span></li>
                     <li><a href="home.php" aria-current="page">Home</a></li>
                     <li><a href="mybooks.php">MyBooks</a></li>
-                    <li><a href="../index.php">Sign out</a></li>
+                    <li><a href="logout.php">Sign out</a></li>
                 </ul>
             </nav>
         </div>
@@ -55,12 +69,13 @@
 
         <section class="container">
             <?php
+            $user = $currentUser;
+
             $servername = 'localhost';
             $username = 'root';
             $passward = '';
             $database = 'commonplace_library';
 
-           
             $conn = new mysqli($servername, $username, $passward, $database);
 
             if ($conn->connect_error) {
