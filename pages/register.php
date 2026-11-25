@@ -106,18 +106,7 @@
                 </form>
 
                 <?php
-                $servername = 'localhost';
-                $username = 'root';
-                $passward = '';
-                $database = 'commonplace_library';
-
-             
-                $conn = new mysqli($servername, $username, $passward, $database);
-
-        
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
+                include "../connection.php";
 
                 if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['firstname']) && isset($_POST['surname']) && isset($_POST['addressline1']) && isset($_POST['addressline2']) && isset($_POST['city']) && isset($_POST['telephone']) && isset($_POST['mobile'])) {
 

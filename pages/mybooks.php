@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 $currentUser = $_SESSION['username'];
-if ($currentUser == ''){
+if ($currentUser == '') {
     echo "<script>window.location.href = '../index.php';</script>";
 }
 ?>
@@ -15,15 +15,19 @@ if ($currentUser == ''){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Books - Book Sanctuary</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../CSS/styles.css">
 </head>
+
 <body>
     <header class="site-header">
         <div class="container">
@@ -36,11 +40,12 @@ if ($currentUser == ''){
             </button>
             <nav id="primary-navigation" class="site-nav" aria-label="Primary">
                 <ul>
-                    <li><span style="color: var(--text-secondary); font-size: 0.9rem; padding: 0.55rem 0.5rem;">Logged in as: <strong><?php echo htmlspecialchars($currentUser); ?></strong></span></li>
+                    <li><span style="color: var(--text-secondary); font-size: 0.9rem; padding: 0.55rem 0.5rem;">Logged
+                            in as: <strong><?php echo htmlspecialchars($currentUser); ?></strong></span></li>
                     <li><a href="home.php">Home</a></li>
                     <li><a href="mybooks.php" aria-current="page">MyBooks</a></li>
-                    <li><a href="../index.php">Sign out</a></li>
-   
+                    <li><a href="logout.php">Sign out</a></li>
+
                 </ul>
             </nav>
         </div>
@@ -49,13 +54,48 @@ if ($currentUser == ''){
     <main class="site-main">
         <section class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
             <div style="margin-bottom: 2rem;">
-                <h2 style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary); margin-bottom: 0.5rem;">My Reserved Books</h2>
+                <h2
+                    style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary); margin-bottom: 0.5rem;">
+                    My Reserved Books</h2>
                 <p style="color: var(--text-secondary);">View and manage books you currently have reserved.</p>
             </div>
 
-<?php
+            <?php
 
-?>
+            include "../connection.php";
+
+            $query = "SELECT r.ISBN, r.Username, b.BookTitle, r.ReservedDate FROM Reservations r JOIN Books b ON r.ISBN = b.ISBN WHERE r.Username LIKE '$currentUser'";
+            $result = $conn->query($query);
+
+            if ($result && $result->num_rows > 0) {
+                echo "<div class='table-wrapper'>";
+                echo "<table>";
+                echo "<thead>";
+                echo "<tr>";
+                echo "<th>ISBN</th>";
+                echo "<th>Book</th>";
+                echo "<th>User Name</th>";
+                echo "<th>Reserved date</th>";
+                echo "<th>Remove Reservation</th>";
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody>";
+
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . htmlentities($row['ISBN']) . "</td>";
+                    echo "<td>" . htmlentities($row['BookTitle']) . "</td>";
+                    echo "<td>" . htmlentities($row['Username']) . "</td>";
+                    echo "<td>" . htmlentities($row['ReservedDate']) . "</td>";
+                    echo("<td>" . '<a href="remove_mybook.php?ISBN=' . htmlentities($row["ISBN"]) . '">Remove</a> '. "</td>");
+                    echo "</tr>";
+                }
+                echo "</tbody>";
+                echo "</table>";
+                echo "</div>";
+            }
+            $conn->close();
+            ?>
         </section>
     </main>
 
@@ -66,7 +106,8 @@ if ($currentUser == ''){
     </footer>
 
     <script>
-        
+
     </script>
 </body>
+
 </html>

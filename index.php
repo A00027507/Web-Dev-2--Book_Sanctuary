@@ -1,10 +1,6 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['username'])) {
-    header("Location: ../index.php");
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -70,19 +66,7 @@ if (!isset($_SESSION['username'])) {
                 </form>
 
                 <?php
-                $servername = 'localhost';
-                $username = 'root';
-                $passward = '';
-                $database = 'commonplace_library';
-
-
-                // Create connection
-                $conn = new mysqli($servername, $username, $passward, $database);
-
-                // Check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
+                include "connection.php";
 
                 if (isset($_POST['username']) && isset($_POST['password'])) {
                     $u = $_POST['username'];

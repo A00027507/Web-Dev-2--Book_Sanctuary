@@ -71,16 +71,7 @@ if ($currentUser == ''){
             <?php
             $user = $currentUser;
 
-            $servername = 'localhost';
-            $username = 'root';
-            $passward = '';
-            $database = 'commonplace_library';
-
-            $conn = new mysqli($servername, $username, $passward, $database);
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
+           include "../connection.php";
 
      
             $search = isset($_GET['q']) ? trim($_GET['q']) : '';
@@ -112,29 +103,30 @@ if ($currentUser == ''){
                 echo "<th>Edition</th>";
                 echo "<th>Year</th>";
                 echo "<th>Category</th>";
+                echo "<th>option</th>";
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
-
-      
+                
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['ISBN']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['BookTitle']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['Author']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['Edition']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['PublishedYear']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['CategoryDescription'] ?? '') . "</td>";
+                    echo "<td>" . htmlentities($row['ISBN']) . "</td>";
+                    echo "<td>" . htmlentities($row['BookTitle']) . "</td>";
+                    echo "<td>" . htmlentities($row['Author']) . "</td>";
+                    echo "<td>" . htmlentities($row['Edition']) . "</td>";
+                    echo "<td>" . htmlentities($row['PublishedYear']) . "</td>";
+                    echo "<td>" . htmlentities($row['CategoryDescription'] ?? '') . "</td>";
+                    echo("<td>" . '<a href="add_mybook.php?ISBN=' . htmlentities($row["ISBN"]) . '">ADD to MyBooks</a> '. "</td>");
                     echo "</tr>";
                 }
 
                 echo "</tbody>";
                 echo "</table>";
                 echo "</div>";
+               
             } else {
                 echo "<div class='alert' style='background-color: var(--bg-surface-alt); margin: 2rem 0;'>No books found." . ($search !== '' ? " <a href='home.php' style='margin-left: 0.5rem;'>View all books</a>" : "") . "</div>";
             }
-
          
             $conn->close();
             ?>
