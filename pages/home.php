@@ -103,7 +103,7 @@ if ($currentUser == ''){
                 echo "<th>Edition</th>";
                 echo "<th>Year</th>";
                 echo "<th>Category</th>";
-                echo "<th>option</th>";
+                echo "<th>ADD to MyBooks</th>";
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
@@ -116,7 +116,7 @@ if ($currentUser == ''){
                     echo "<td>" . htmlentities($row['Edition']) . "</td>";
                     echo "<td>" . htmlentities($row['PublishedYear']) . "</td>";
                     echo "<td>" . htmlentities($row['CategoryDescription'] ?? '') . "</td>";
-                    echo("<td>" . '<a href="add_mybook.php?ISBN=' . htmlentities($row["ISBN"]) . '">ADD to MyBooks</a> '. "</td>");
+                    echo("<td>" . '<a href="add_mybook.php?ISBN=' . htmlentities($row["ISBN"]) . '">Reserve</a> '. "</td>");
                     echo "</tr>";
                 }
 

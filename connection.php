@@ -2,7 +2,7 @@
             $servername = 'localhost';
             $username = 'root';
             $passward = '';
-            $database = 'commonplace_library';
+            $database = 'project_database_WD2';
 
             $conn = new mysqli($servername, $username, $passward, $database);
 

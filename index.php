@@ -82,7 +82,6 @@ session_start();
                         if ($row['PasswordHash'] === $p) {
                             $_SESSION['username'] = $u;
                             header("Location: pages/home.php");
-                            echo "<script>window.location.href = 'pages/home.php';</script>";
                             exit();
                         } else {
                             echo "<p style='color: red; font-weight: bold; margin-top: 1rem;'>Incorrect password.</p>";
@@ -91,7 +90,6 @@ session_start();
                         echo "<p style='color: red; font-weight: bold; margin-top: 1rem;'>Username does not exist.</p>";
                     }
                     
-                    $_SESSION['username'] = $u;
 
                     $conn->close();
                 }
