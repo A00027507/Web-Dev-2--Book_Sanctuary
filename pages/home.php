@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 $currentUser = $_SESSION['username'];
-if ($currentUser == ''){
+if ($currentUser == '') {
     echo "<script>window.location.href = '../index.php';</script>";
 }
 ?>
@@ -38,7 +38,8 @@ if ($currentUser == ''){
             </button>
             <nav id="primary-navigation" class="site-nav" aria-label="Primary">
                 <ul>
-                    <li><span style="color: var(--text-secondary); font-size: 0.9rem; padding: 0.55rem 0.5rem;">Logged in as: <strong><?php echo htmlspecialchars($currentUser); ?></strong></span></li>
+                    <li><span style="color: var(--text-secondary); font-size: 0.9rem; padding: 0.55rem 0.5rem;">Logged
+                            in as: <strong><?php echo htmlspecialchars($currentUser); ?></strong></span></li>
                     <li><a href="home.php" aria-current="page">Home</a></li>
                     <li><a href="mybooks.php">MyBooks</a></li>
                     <li><a href="logout.php">Sign out</a></li>
@@ -68,12 +69,19 @@ if ($currentUser == ''){
         </section>
 
         <section class="container">
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'already_reserved'): ?>
+                <p style="color: red; font-weight: bold; margin: 1rem 0;">
+                    This book is already reserved!
+                </p>
+            <?php endif; ?>
+
+            
             <?php
             $user = $currentUser;
 
-           include "../connection.php";
+            include "../connection.php";
 
-     
+
             $search = isset($_GET['q']) ? trim($_GET['q']) : '';
 
             if ($search !== '') {
@@ -83,8 +91,7 @@ if ($currentUser == ''){
                 LEFT JOIN Categories c ON b.CategoryID = c.CategoryID 
                 WHERE b.BookTitle LIKE '%$searchEscaped%' OR b.Author LIKE '%$searchEscaped%'";
                 echo "<p style='margin: 1.5rem 0 0.5rem; color: var(--text-secondary);'>Search results for: <strong>" . htmlspecialchars($search) . "</strong> (<a href='home.php'>Show all</a>)</p>";
-            } 
-            else {
+            } else {
                 $query = "SELECT b.ISBN, b.BookTitle, b.Author, b.Edition, b.PublishedYear, c.CategoryDescription 
                 FROM Books b 
                 LEFT JOIN Categories c ON b.CategoryID = c.CategoryID";
@@ -107,7 +114,7 @@ if ($currentUser == ''){
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
-                
+
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . htmlentities($row['ISBN']) . "</td>";
@@ -116,18 +123,18 @@ if ($currentUser == ''){
                     echo "<td>" . htmlentities($row['Edition']) . "</td>";
                     echo "<td>" . htmlentities($row['PublishedYear']) . "</td>";
                     echo "<td>" . htmlentities($row['CategoryDescription'] ?? '') . "</td>";
-                    echo("<td>" . '<a href="add_mybook.php?ISBN=' . htmlentities($row["ISBN"]) . '">Reserve</a> '. "</td>");
+                    echo ("<td>" . '<a href="add_mybook.php?ISBN=' . htmlentities($row["ISBN"]) . '">Reserve</a> ' . "</td>");
                     echo "</tr>";
                 }
 
                 echo "</tbody>";
                 echo "</table>";
                 echo "</div>";
-               
+
             } else {
                 echo "<div class='alert' style='background-color: var(--bg-surface-alt); margin: 2rem 0;'>No books found." . ($search !== '' ? " <a href='home.php' style='margin-left: 0.5rem;'>View all books</a>" : "") . "</div>";
             }
-         
+
             $conn->close();
             ?>
         </section>

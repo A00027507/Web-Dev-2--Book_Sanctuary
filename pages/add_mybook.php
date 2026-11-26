@@ -7,30 +7,24 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-
-
-
-
 $currentUser = $_SESSION['username'];
 $isbn = $_GET['ISBN'];
 $rd = date('Y-m-d');
 
+$checkSql = "SELECT ISBN FROM Reservations WHERE ISBN = '$isbn'";
+$checkResult = $conn->query($checkSql);
 
-$sql = "INSERT INTO Reservations (ISBN, Username, ReservedDate) VALUES ('$isbn', '$currentUser', '$rd')";
-
-if ($conn->query($sql) === TRUE) {
-    echo "<p style='color: green; font-weight: bold; margin-top: 1rem;'>New record created successfully</p>";
+if ($checkResult && $checkResult->num_rows == 0) {
+    $sql = "INSERT INTO Reservations (ISBN, Username, ReservedDate) VALUES ('$isbn', '$currentUser', '$rd')";
+    $conn->query($sql);
+    $conn->close();
+    header("Location: home.php");  
+    exit();
+    
 } else {
-    echo "<p style='color: red; font-weight: bold; margin-top: 1rem;'>Error: " . $sql . "<br>" . $conn->error . "</p>";
+    $conn->close();
+    header("Location: home.php?error=already_reserved"); 
+     exit();
 }
-header("Location: home.php");
-$conn->close();
-
-
-
-
-
-
 
 ?>
-
